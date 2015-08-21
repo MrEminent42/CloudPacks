@@ -1,0 +1,5 @@
+key:
+  name: "&6Key to &r%name%"
+  lore:
+  - "&eRight Click to Open &r%name%"
+  - "&eCurrent Owner: &r%owner%"
