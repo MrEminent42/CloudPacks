@@ -3,9 +3,12 @@ package me.MrEminent42.cp;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Localization;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
 import CSCoreLibSetup.CSCoreLibLoader;
 
-public class CloudPacksPlugin {
+public class CloudPacksPlugin extends JavaPlugin {
 	
 	public static Config config;
 	public static Localization messages;
@@ -22,11 +25,10 @@ public class CloudPacksPlugin {
 			messages = utils.getLocalization();
 			utils.setupMetrics();
 			
-			messages.setDefault("blocked-message", "&cYou cannot perform %cmd%!");
+			messages.setDefault("", "&cYou cannot perform %cmd%!");
 			messages.save();
 
 		}
 	}
-	
 	
 }

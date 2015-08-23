@@ -3,3 +3,5 @@ key:
   lore:
   - "&eRight Click to Open &r%name%"
   - "&eCurrent Owner: &r%owner%"
+auto-givekey: true
+key-limit: 1
