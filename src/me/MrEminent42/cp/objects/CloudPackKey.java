@@ -22,12 +22,12 @@ public class CloudPackKey {
 	
 	public CloudPackKey(CloudPack p) {
 		this.p = p;
-		this.name = CloudPacksPlugin.config.getString("key.name");
-		this.lore = CloudPacksPlugin.config.getStringList("key.lore");
+		this.name = CloudPacksPlugin.config.getConfig().getString("key.name");
+		this.lore = CloudPacksPlugin.config.getConfig().getStringList("key.lore");
 	}
 	
 	public void give(Player p) {
-		ItemStack item = new ItemStack(Material.matchMaterial(CloudPacksPlugin.config.getString("key.item")));
+		ItemStack item = new ItemStack(Material.matchMaterial(CloudPacksPlugin.config.getConfig().getString("key.item")));
 		List<String> lore = new ArrayList<String>();
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(this.name.replaceAll("%name%", this.p.getName()).replaceAll("%owner%", Bukkit.getPlayer(this.p.getOwner()).getName()));

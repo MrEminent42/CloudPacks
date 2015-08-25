@@ -8,8 +8,6 @@ import me.clip.autosell.events.DropsToInventoryEvent;
 import me.clip.autosell.events.SellAllEvent;
 import me.clip.autosell.events.SignSellEvent;
 import me.clip.autosell.objects.Shop;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
-import me.mrCookieSlime.PrisonUtils.Backpacks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,7 +33,7 @@ public class AutoSellHook implements Listener {
 		int addItems = 0;
 		double addMoney = 0;
 		
-		for (CloudPack pk : CloudPack.getPacks(e.getPlayer().getUniqueId())) {
+		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
 			List<ItemStack> backpackItems = pk.getContents();
 			
 			for (ItemStack item : backpackItems) {
@@ -69,7 +67,7 @@ public class AutoSellHook implements Listener {
 		int addItems = 0;
 		double addMoney = 0;
 		
-		for (CloudPack pk : CloudPack.getPacks(e.getPlayer().getUniqueId())) {
+		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
 			List<ItemStack> backpackItems = pk.getContents();
 			
 			for (ItemStack item : backpackItems) {
@@ -113,7 +111,7 @@ public class AutoSellHook implements Listener {
 //			}
 //		}
 		
-		for (CloudPack pk : CloudPack.getPacks(e.getPlayer().getUniqueId())) {
+		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
 			if (e.getDrops().isEmpty()) return;
 			for (ItemStack item : e.getDrops()) {
 				if (e.getDrops().isEmpty() || item.getType() == Material.AIR) return;

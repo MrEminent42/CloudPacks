@@ -1,0 +1,7 @@
+name: CloudPacks
+author: MrEminent42
+version: Beta
+main: me.MrEminent42.cp.CloudPacksPlugin
+description: The most customizable and awesome Backpacks plugin! Compatible with AutoSell/TokenEnchant/PrisonUitls/QuickSell etc.
+depend: [ProtocolLib]
+softdepend: [AutoSell, QuickSell, PrisonUtils]
