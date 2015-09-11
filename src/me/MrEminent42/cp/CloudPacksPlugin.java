@@ -4,16 +4,18 @@ import java.io.File;
 import java.util.Arrays;
 
 import me.MrEminent42.cp.Config.ConfigWrapper;
+import me.MrEminent42.cp.listeners.GUIListener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CloudPacksPlugin extends JavaPlugin {
 	
 	public static ConfigWrapper config;
 	public static ConfigWrapper messages;
-	private String host, port, database, username, password;
 	
 	public void onEnable() {
+		
 		
 		config = new ConfigWrapper(this, getDataFolder() + File.separator, "config.yml");
 		messages = new ConfigWrapper(this, getDataFolder() + File.separator, "messages.yml");
@@ -25,12 +27,9 @@ public class CloudPacksPlugin extends JavaPlugin {
 		config.getConfig().addDefault("key.lore", Arrays.asList("&6Key to &r%name%", "&eCurrent Owner: &r%owner%"));
 		config.getConfig().addDefault("auto-givekey", true);
 		config.getConfig().addDefault("key-limit", 1);
-		config.getConfig().addDefault("mysql.host", "127.0.0.1");
-		config.getConfig().addDefault("mysql.port", "3306");
-		config.getConfig().addDefault("mysql.database", "name");
-		config.getConfig().addDefault("mysql.username", "user");
-		config.getConfig().addDefault("mysql.password", "pass");
 		
+		
+		Bukkit.getServer().getPluginManager().registerEvents(new GUIListener(this), this);
 		
 	}
 	
