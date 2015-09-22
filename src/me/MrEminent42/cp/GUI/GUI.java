@@ -2,6 +2,7 @@ package me.MrEminent42.cp.GUI;
 
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class GUI {
@@ -18,4 +19,23 @@ public class GUI {
 		
 	}
 	
+	public void addItem(ItemStack item, int slot) { 
+		this.items.put(slot, item);
+	}
+	
+	public void open(Player p) {
+		// TODO Finish This.
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public int getSize() {
+		return this.size;
+	}
+	
+	public HashMap<Integer, ItemStack> getItems() {
+		return this.items;
+	}
 }

@@ -96,30 +96,17 @@ public class AutoSellHook implements Listener {
 	
 	@EventHandler
 	public void dropsToInventory(DropsToInventoryEvent e) {
-		
 		Player p = e.getPlayer();
 		Inventory pInv = p.getInventory();
+		if (e.getDrops().isEmpty()) return;
 		
-//		for (ItemStack item : pInv.getContents()) {
-//			if (Backpacks.isBackPack(item)) {
-//				Inventory backpack = Backpacks.getInventory(item);
-//				if (InvUtils.fits(backpack, item)) {
-//					for (ItemStack drop : e.getDrops()) backpack.addItem(drop);
-//					e.setCancelled(true);
-//					return;
-//				}
-//			}
-//		}
-		
-		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
-			if (e.getDrops().isEmpty()) return;
-			for (ItemStack item : e.getDrops()) {
-				if (e.getDrops().isEmpty() || item.getType() == Material.AIR) return;
-				pk.addItem(item);
-				e.getDrops().remove(item);
+		for (int i = 0; i < e.getDrops().size(); i++) {
+			ItemStack item = e.getDrops().get(i);
+			if (item.getType() == Material.AIR) continue;
+			for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
+				if (pk.addItem(item).isEmpty()) e.getDrops().remove(item);
 			}
 		}
-		
 	}
 
 }

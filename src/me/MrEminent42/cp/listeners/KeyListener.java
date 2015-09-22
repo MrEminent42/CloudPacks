@@ -1,9 +1,7 @@
 package me.MrEminent42.cp.listeners;
 
-public class KeyListener {
-	
-	public KeyListener() {
-		
-	}
+import org.bukkit.event.Listener;
+
+public class KeyListener implements Listener {
 	
 }

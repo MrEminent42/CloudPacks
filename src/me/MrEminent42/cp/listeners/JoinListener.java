@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import me.MrEminent42.cp.CloudPacksPlugin;
-import me.MrEminent42.cp.Config.ConfigWrapper;
+import me.MrEminent42.cp.Config.CloudPackConfig;
 import me.MrEminent42.cp.objects.CloudPack;
 
 import org.bukkit.Bukkit;
@@ -26,7 +26,7 @@ public class JoinListener implements Listener {
 		
 		for (File f : new File("plugins/CloudPack/storage").listFiles()) {
 			if (f.isDirectory()) continue;
-			ConfigWrapper cfg = new ConfigWrapper(plugin, "plugins/CloudPack/storage/", f.getName());
+			CloudPackConfig cfg = new CloudPackConfig(plugin, "plugins/CloudPack/storage/", f.getName());
 			cfg.createFile("", "");
 			
 			if (cfg.getConfig().getString("owner").equalsIgnoreCase(p.getName())) CloudPack.loadPack(UUID.fromString(cfg.getConfig().getString("id")));

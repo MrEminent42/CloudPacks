@@ -5,6 +5,9 @@ import java.util.Arrays;
 
 import me.MrEminent42.cp.Config.ConfigWrapper;
 import me.MrEminent42.cp.listeners.GUIListener;
+import me.MrEminent42.cp.listeners.JoinListener;
+import me.MrEminent42.cp.listeners.KeyListener;
+import me.MrEminent42.cp.listeners.MineListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,7 +18,6 @@ public class CloudPacksPlugin extends JavaPlugin {
 	public static ConfigWrapper messages;
 	
 	public void onEnable() {
-		
 		
 		config = new ConfigWrapper(this, getDataFolder() + File.separator, "config.yml");
 		messages = new ConfigWrapper(this, getDataFolder() + File.separator, "messages.yml");
@@ -29,7 +31,10 @@ public class CloudPacksPlugin extends JavaPlugin {
 		config.getConfig().addDefault("key-limit", 1);
 		
 		
-		Bukkit.getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new GUIListener(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new JoinListener(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new KeyListener(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new MineListener(), this);
 		
 	}
 	

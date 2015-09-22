@@ -9,13 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public abstract class GUIListener implements Listener {
+public class GUIListener implements Listener {
 	
-	CloudPacksPlugin plugin;
-	
-	public GUIListener(CloudPacksPlugin plugin) {
-		this.plugin = plugin;
-	}
+	CloudPacksPlugin plugin = CloudPacksPlugin.getPlugin(CloudPacksPlugin.class);
 	
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
