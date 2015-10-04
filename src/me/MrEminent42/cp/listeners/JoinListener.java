@@ -24,9 +24,9 @@ public class JoinListener implements Listener {
 		
 		Bukkit.getLogger().log(Level.INFO, "Loading all CloudPacks for " + p.getName() + "...");
 		
-		for (File f : new File("plugins/CloudPack/storage").listFiles()) {
-			if (f.isDirectory()) continue;
-			CloudPackConfig cfg = new CloudPackConfig(plugin, "plugins/CloudPack/storage/", f.getName());
+		for (File file : new File("plugins/CloudPack/storage").listFiles()) {
+			if (file.isDirectory() || !(file.getName().endsWith(".pack"))) continue;
+			CloudPackConfig cfg = new CloudPackConfig(file);
 			cfg.createFile("", "");
 			
 			if (cfg.getConfig().getString("owner").equalsIgnoreCase(p.getName())) CloudPack.loadPack(UUID.fromString(cfg.getConfig().getString("id")));

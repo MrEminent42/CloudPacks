@@ -33,7 +33,7 @@ public class AutoSellHook implements Listener {
 		int addItems = 0;
 		double addMoney = 0;
 		
-		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
+		for (CloudPack pk : CloudPack.getActivatedPacks(e.getPlayer().getUniqueId())) {
 			List<ItemStack> backpackItems = pk.getContents();
 			
 			for (ItemStack item : backpackItems) {
@@ -67,7 +67,7 @@ public class AutoSellHook implements Listener {
 		int addItems = 0;
 		double addMoney = 0;
 		
-		for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
+		for (CloudPack pk : CloudPack.getActivatedPacks(e.getPlayer().getUniqueId())) {
 			List<ItemStack> backpackItems = pk.getContents();
 			
 			for (ItemStack item : backpackItems) {
@@ -103,7 +103,7 @@ public class AutoSellHook implements Listener {
 		for (int i = 0; i < e.getDrops().size(); i++) {
 			ItemStack item = e.getDrops().get(i);
 			if (item.getType() == Material.AIR) continue;
-			for (CloudPack pk : CloudPack.getLoadedPacks(e.getPlayer().getUniqueId())) {
+			for (CloudPack pk : CloudPack.getActivatedPacks(e.getPlayer().getUniqueId())) {
 				if (pk.addItem(item).isEmpty()) e.getDrops().remove(item);
 			}
 		}

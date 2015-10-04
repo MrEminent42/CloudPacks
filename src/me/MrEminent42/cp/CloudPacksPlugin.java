@@ -17,12 +17,24 @@ public class CloudPacksPlugin extends JavaPlugin {
 	public static ConfigWrapper config;
 	public static ConfigWrapper messages;
 	
+	static boolean debug;
+	
+	public boolean hookedAS;
+	public boolean hookedPU;
+	public boolean hookedQS;
+	
 	public void onEnable() {
+		
+		if (!getDescription().getAuthors().get(0).equals("MrEminent42")) {
+			getLogger().severe("The author of this plugin is MrEminent42, not someone else!");
+			getLogger().severe("Disabling this plugin.");
+			getServer().getPluginManager().disablePlugin(this);
+		}
 		
 		config = new ConfigWrapper(this, getDataFolder() + File.separator, "config.yml");
 		messages = new ConfigWrapper(this, getDataFolder() + File.separator, "messages.yml");
 		
-		config.createFile("Loading config file...", getDescription().getName() + " v" + getDescription().getVersion() + " configuration file");
+		config.createFile("Loading config file...", getDescription().getName() + " configuration file");
 		messages.createFile("Loading messages file...", "");
 		
 		config.getConfig().addDefault("key.name", "&6Key to &r%name%");
@@ -36,6 +48,25 @@ public class CloudPacksPlugin extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(new KeyListener(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new MineListener(), this);
 		
+		if (getServer().getPluginManager().isPluginEnabled("AutoSell")) {
+			this.hookedAS = true;
+			// TODO load AS
+		}
+		
+		if (getServer().getPluginManager().isPluginEnabled("PrisonUtils")) {
+			this.hookedPU = true;
+			// TODO load PU
+		}
+		
+		if (getServer().getPluginManager().isPluginEnabled("QuickSell")) {
+			this.hookedQS = true;
+			// TODO load QS
+		}
+		
+	}
+	
+	public static void debug(String message) {
+		System.out.println("[CloudPacks - Debug] " + message);
 	}
 	
 }
