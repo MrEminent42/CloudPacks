@@ -1,11 +1,8 @@
 package me.MrEminent42.cp.listeners;
 
-import java.io.File;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import me.MrEminent42.cp.CloudPacksPlugin;
-import me.MrEminent42.cp.Config.CloudPackConfig;
 import me.MrEminent42.cp.objects.CloudPack;
 
 import org.bukkit.Bukkit;
@@ -24,13 +21,6 @@ public class JoinListener implements Listener {
 		
 		Bukkit.getLogger().log(Level.INFO, "Loading all CloudPacks for " + p.getName() + "...");
 		
-		for (File file : new File("plugins/CloudPack/storage").listFiles()) {
-			if (file.isDirectory() || !(file.getName().endsWith(".pack"))) continue;
-			CloudPackConfig cfg = new CloudPackConfig(file);
-			cfg.createFile("", "");
-			
-			if (cfg.getConfig().getString("owner").equalsIgnoreCase(p.getName())) CloudPack.loadPack(UUID.fromString(cfg.getConfig().getString("id")));
-			
-		}
+		CloudPack.loadPlayerPacks(p);
 	}
 }

@@ -16,12 +16,12 @@ import me.MrEminent42.cp.CloudPacksPlugin;
 public class CloudPackKey {
 	
 	CloudPacksPlugin plugin;
-	CloudPack p;
+	CloudPack pack;
 	String name;
 	List<String> lore;
 	
-	public CloudPackKey(CloudPack p) {
-		this.p = p;
+	public CloudPackKey(CloudPack pack) {
+		this.pack = pack;
 		this.name = CloudPacksPlugin.config.getConfig().getString("key.name");
 		this.lore = CloudPacksPlugin.config.getConfig().getStringList("key.lore");
 	}
@@ -30,10 +30,10 @@ public class CloudPackKey {
 		ItemStack item = new ItemStack(Material.matchMaterial(CloudPacksPlugin.config.getConfig().getString("key.item")));
 		List<String> lore = new ArrayList<String>();
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(this.name.replaceAll("%name%", this.p.getName()).replaceAll("%owner%", Bukkit.getPlayer(this.p.getOwner()).getName()));
-		for (String s : this.lore) lore.add(ChatColor.translateAlternateColorCodes('&', s.replaceAll("%name%", this.p.getName()).replaceAll("%owner%", Bukkit.getPlayer(this.p.getOwner()).getName())));
+		meta.setDisplayName(this.name.replaceAll("%name%", this.pack.getName()).replaceAll("%owner%", Bukkit.getPlayer(this.pack.getOwner()).getName()));
+		for (String s : this.lore) lore.add(ChatColor.translateAlternateColorCodes('&', s.replaceAll("%name%", this.pack.getName()).replaceAll("%owner%", Bukkit.getPlayer(this.pack.getOwner()).getName())));
 		lore.add("");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7ID: " + this.p.getID()));
+		lore.add(ChatColor.translateAlternateColorCodes('&', "&7ID: " + this.pack.getID()));
 		meta.setLore(lore);
 		
 		p.getInventory().addItem(item);

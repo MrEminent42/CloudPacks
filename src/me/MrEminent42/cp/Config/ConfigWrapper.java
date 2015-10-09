@@ -1,4 +1,4 @@
-package me.MrEminent42.cp.Config;
+package me.MrEminent42.cp.config;
 
 import java.io.File;
 import java.io.IOException;

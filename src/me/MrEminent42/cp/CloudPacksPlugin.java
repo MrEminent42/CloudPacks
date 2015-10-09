@@ -3,7 +3,7 @@ package me.MrEminent42.cp;
 import java.io.File;
 import java.util.Arrays;
 
-import me.MrEminent42.cp.Config.ConfigWrapper;
+import me.MrEminent42.cp.config.ConfigWrapper;
 import me.MrEminent42.cp.listeners.GUIListener;
 import me.MrEminent42.cp.listeners.JoinListener;
 import me.MrEminent42.cp.listeners.KeyListener;
@@ -62,6 +62,10 @@ public class CloudPacksPlugin extends JavaPlugin {
 			this.hookedQS = true;
 			// TODO load QS
 		}
+		
+	}
+	
+	public void onDisable() {
 		
 	}
 	

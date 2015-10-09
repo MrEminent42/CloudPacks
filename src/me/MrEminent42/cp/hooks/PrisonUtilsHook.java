@@ -26,7 +26,7 @@ public class PrisonUtilsHook {
 				for (int i = 0; i < drops.size(); i++) {
 					ItemStack item = drops.get(i);
 					if (item.getType().equals(Material.AIR)) continue;
-					for (CloudPack pk : CloudPack.getActivatedPacks(p.getUniqueId())) {
+					for (CloudPack pk : CloudPack.getPlayerPacks(p)) {
 						if (pk.addItem(item).isEmpty()) drops.remove(item);
 					}
 				}

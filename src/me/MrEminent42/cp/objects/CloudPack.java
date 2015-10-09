@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 import me.MrEminent42.cp.CloudPacksPlugin;
-import me.MrEminent42.cp.Config.CloudPackConfig;
-import me.MrEminent42.cp.Config.ConfigWrapper;
+import me.MrEminent42.cp.config.CloudPackConfig;
+import me.MrEminent42.cp.config.ConfigWrapper;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +20,9 @@ public class CloudPack {
 	
 	private static CloudPacksPlugin plugin = CloudPacksPlugin.getPlugin(CloudPacksPlugin.class);
 	
+	private static ArrayList<CloudPack> packs = new ArrayList<CloudPack>();
 	private static ArrayList<CloudPack> open = new ArrayList<CloudPack>();
-	private static ArrayList<CloudPack> activated = new ArrayList<CloudPack>();
+	private static ArrayList<CloudPackConfig> packFiles = new ArrayList<CloudPackConfig>();
 	
 	private String name;
 	private UUID id;
@@ -44,9 +46,12 @@ public class CloudPack {
 		this.packConfig.getConfig().set("rows", rows);
 		
 		this.inv = Bukkit.getServer().createInventory(null, rows, name);
+		
+		packs.add(this);
 	}
 	
 	public CloudPack(CloudPackConfig config) {
+		config.reloadConfig();
 		this.name = config.getName();
 		this.id = config.getID();
 		this.owner = config.getOwner();
@@ -63,11 +68,6 @@ public class CloudPack {
 	public void giveKey(Player p) {
 		CloudPackKey key = new CloudPackKey(this);
 		key.give(p);
-	}
-	
-	public boolean isActive(CloudPack p) {
-		if (activated.contains(p)) return true;
-		return false;
 	}
 	
 	// Contents \\
@@ -116,78 +116,62 @@ public class CloudPack {
 		return this.inv;
 	}
 	
-	// Load \\
-	public CloudPack activate() {
-		activated.add(this);
-		return this;
+	// Save \\
+	public void saveToFile() {
+		this.packConfig.getConfig().set("name", this.name);
+		this.packConfig.getConfig().set("owner", this.owner);
+		this.packConfig.getConfig().set("id", this.id);
+		this.packConfig.getConfig().set("rows", this.rows);
+		this.packConfig.getConfig().set("contents", this.contents);
+		this.packConfig.saveConfig();
+		this.packConfig.reloadConfig();
 	}
 	
-	// STATIC METHODS \\
+	// Unload \\
+	public void unload() {
+		this.saveToFile();
+		CloudPack.packs.remove(this);
+	}
 	
-	// Pack Management \\
-	
-	public static ArrayList<CloudPack> getActivatedPacks(UUID owner) {
+	public static ArrayList<CloudPack> getPlayerPacks(OfflinePlayer p) {
 		ArrayList<CloudPack> packs = new ArrayList<CloudPack>();
-		for (CloudPack pack : activated) {
-			if (pack.getOwner().equals(owner)) packs.add(pack);
+		for (CloudPack pack : packs) {
+			if (pack.getOwner().equals(p.getUniqueId())) packs.add(pack);
 		}
 		return packs;
 	}
 	
-	public static ArrayList<CloudPack> getAllPacks(UUID owner) {
-		ArrayList<CloudPack> packs = new ArrayList<CloudPack>();
-		
-		File folder = new File("plugins/CloudPacks/storage/");
-		for (File file : folder.listFiles()) {
-			if (file.isDirectory()) continue;
-			CloudPackConfig cfg = new CloudPackConfig(file);
-			List<ItemStack> items = new ArrayList<ItemStack>();
-			int rows = cfg.getConfig().getConfigurationSection("contents").getKeys(false).size();
-			for (int i = 0; i < rows; i++) items.add(cfg.getConfig().getItemStack("contents." + i));
-			packs.add(new CloudPack(UUID.fromString(file.getName()), cfg.getConfig().getString("name"), 
-					UUID.fromString(file.getName()), items, rows));
-		}
-		return packs;
-	}
-	
-	public static CloudPack getActivatedPack(UUID id) {
-		for (CloudPack pack : activated) {
-			if (pack.getID().equals(id)) return pack;
+	public static CloudPack getPack(UUID packID) {
+		for (CloudPack pack : packs) {
+			if (pack.getID().equals(packID)) return pack;
 		}
 		return null;
 	}
 	
-	public static CloudPack loadPack(UUID id) {
-		File file = new File("plugins/CloudPacks/storage/" + id + ".pack");
-		CloudPackConfig cfg = new CloudPackConfig(file);
-		List<ItemStack> items = new ArrayList<ItemStack>();
-		for (int i = 0; i < cfg.getConfig().getInt("rows"); i++) items.add(cfg.getConfig().getItemStack("contents." + i));
-		
-		return new CloudPack(UUID.fromString(cfg.getConfig().getString("owner")), cfg.getConfig().getString("name"), 
-				UUID.fromString(file.getName().replaceAll(".pack", "")), items, cfg.getConfig().getInt("rows")).activate();
-	}
-	
-	public static boolean isLoaded(CloudPack pack) {
-		if (activated.contains(pack)) return true;
-		return false;
-	}
-	
-	public static void loadPlayersPacks(UUID owner) {
+	/**
+	 * Loads all packs for an OfflinePlayer
+	 * @param p - OfflinePlayer to load packs for
+	 */
+	public static void loadPlayerPacks(OfflinePlayer p) {
 		File folder = new File("plugins/CloudPacks/storage");
 		for (File file : folder.listFiles()) {
 			if (file.isDirectory() || (!file.getName().endsWith(".pack"))) continue;
 			
 			CloudPackConfig cfg = new CloudPackConfig(file);
-			if (UUID.fromString(cfg.getConfig().getString("owner")).equals(owner)) {
+			if (UUID.fromString(cfg.getConfig().getString("owner")).equals(p.getUniqueId())) {
 				List<ItemStack> items = new ArrayList<ItemStack>();
 				for (int i = 0; i < cfg.getConfig().getInt("rows"); i++) items.add(cfg.getConfig().getItemStack("contents." + i));
 				
 				new CloudPack(UUID.fromString(cfg.getConfig().getString("owner")), cfg.getConfig().getString("name"), 
-						UUID.fromString(file.getName().replaceAll(".pack", "")), items, cfg.getConfig().getInt("rows")).activate();
+						UUID.fromString(file.getName().replaceAll(".pack", "")), items, cfg.getConfig().getInt("rows"));
 			}
 		}
 	}
 	
+	/**
+	 * Get all CloudPackConfigs in the 
+	 * @return
+	 */
 	public static ArrayList<CloudPackConfig> getAllPackFiles() {
 		ArrayList<CloudPackConfig> configs = new ArrayList<CloudPackConfig>();
 		
@@ -202,5 +186,20 @@ public class CloudPack {
 		}
 		
 		return configs;
+	}
+	
+	public static void unloadPlayerPacks(OfflinePlayer p) {
+		for (CloudPack pack : CloudPack.getPlayerPacks(p)) {
+			if (pack.getOwner().equals(p.getUniqueId())) {
+				pack.unload();
+			}
+		}
+	}
+	
+	public static ArrayList<CloudPackConfig> loadPackFiles() {
+		for (CloudPackConfig config : getAllPackFiles()) {
+			CloudPack.packFiles.add(config);
+		}
+		return getAllPackFiles();
 	}
 }
