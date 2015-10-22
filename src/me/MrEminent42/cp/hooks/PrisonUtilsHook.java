@@ -1,9 +1,12 @@
 package me.MrEminent42.cp.hooks;
 
+import java.util.Arrays;
 import java.util.List;
 
+import me.MrEminent42.cp.listeners.MineListener;
 import me.MrEminent42.cp.objects.CloudPack;
 import me.mrCookieSlime.PrisonUtils.MiningHandler;
+import me.mrCookieSlime.PrisonUtils.MiningListener;
 import me.mrCookieSlime.PrisonUtils.PrisonUtils;
 
 import org.bukkit.Material;
@@ -30,6 +33,7 @@ public class PrisonUtilsHook {
 						if (pk.addItem(item).isEmpty()) drops.remove(item);
 					}
 				}
+				MineListener.handleMining(p, drops);
 				
 				return drops;
 			}

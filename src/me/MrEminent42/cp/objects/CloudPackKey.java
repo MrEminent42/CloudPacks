@@ -15,15 +15,20 @@ import me.MrEminent42.cp.CloudPacksPlugin;
 
 public class CloudPackKey {
 	
-	CloudPacksPlugin plugin;
+	static CloudPacksPlugin plugin = CloudPacksPlugin.getPlugin(CloudPacksPlugin.class);
+	
 	CloudPack pack;
 	String name;
 	List<String> lore;
 	
 	public CloudPackKey(CloudPack pack) {
 		this.pack = pack;
-		this.name = CloudPacksPlugin.config.getConfig().getString("key.name");
-		this.lore = CloudPacksPlugin.config.getConfig().getStringList("key.lore");
+		this.name = CloudPacksPlugin.messages.getMessage("key.name").get(0);
+		this.lore = CloudPacksPlugin.messages.getMessage("key.lore");
+	}
+	
+	public CloudPackKey(UUID packID) {
+		new CloudPackKey(CloudPack.getPack(packID));
 	}
 	
 	public void give(Player p) {
@@ -47,7 +52,15 @@ public class CloudPackKey {
 				if (id.equals(p.getID())) return true;
 			} 
 		}
-		
+		return false;
+	}
+	
+	public static CloudPack opens(CloudPackKey key) {
+		return key.pack;
+	}
+	
+	public static boolean isCloudPackKey(ItemStack item) {
+		if (item.getItemMeta().getLore().get(item.getItemMeta().getLore().size() - 1).contains("ID: ")) return true;
 		return false;
 	}
 	

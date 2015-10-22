@@ -8,5 +8,6 @@ softdepend: [AutoSell, QuickSell, PrisonUtils]
 
 commands:
   cloudpacks:
+    usage: /cloudpacks <panel> <player>
     description: CloudPack's main command!
     aliases: [cloudpack, cp, packs, backpack, backpacks, pack]

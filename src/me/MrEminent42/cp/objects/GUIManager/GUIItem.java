@@ -1,40 +1,26 @@
 package me.MrEminent42.cp.objects.GUIManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class GUIItem {
+public class GUIItem extends ItemStack {
 	
-	private ItemStack item;
-	private String name;
-	private ArrayList<String> lore;
 	private ClickHandler handler;
+	public ItemMeta meta;
 	
-	
-	public GUIItem(ItemStack item, String name, ArrayList<String> lore, ClickHandler handler) {
-		this.item = item;
-		this.name = name;
-		this.lore = lore;
+	public GUIItem(Material mat, Integer amount, ClickHandler handler) {
+		super(mat, amount);
 		this.handler = handler;
+		this.meta = getItemMeta();
 	}
-
+	
+	public GUIItem(ItemStack item) {
+		super(item.getType(), item.getAmount());
+	}
 
 	public ClickHandler getHandler() {
 		return handler;
-	}
-	
-	public ItemStack getItem() {
-		return item;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public ArrayList<String> getLore() {
-		return lore;
 	}
 	
 }

@@ -4,5 +4,6 @@ import org.bukkit.entity.Player;
 
 public abstract class ClickHandler {
 	
-	public abstract void onClick(Player p);
+	public abstract void onClick(Player player, GUIItem clicked);
+	
 }

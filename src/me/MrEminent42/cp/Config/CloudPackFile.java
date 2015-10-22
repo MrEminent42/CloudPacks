@@ -10,12 +10,13 @@ import me.MrEminent42.cp.objects.CloudPack;
 
 import org.bukkit.inventory.ItemStack;
 
-public class CloudPackConfig extends ConfigWrapper {
+public class CloudPackFile extends ConfigWrapper {
 	
 	static CloudPacksPlugin plugin = CloudPacksPlugin.getPlugin(CloudPacksPlugin.class);
 
 	String name;
 	int rows;
+	int staticID;
 	UUID owner;
 	UUID id;
 	ArrayList<ItemStack> contents;
@@ -24,13 +25,14 @@ public class CloudPackConfig extends ConfigWrapper {
 	 * Create a config from a filled file. Does not add values. Used to see values of packs.
 	 * @param file
 	 */
-	public CloudPackConfig(File file) {
+	public CloudPackFile(File file) {
 		super(plugin, "storage", file.getName());
 		reloadConfig();
 		
 		this.name = getConfig().getString("name");
 		this.owner = UUID.fromString(getConfig().getString("owner"));
 		this.rows = getConfig().getInt("rows");
+		this.staticID = getConfig().getInt("static-id");
 		this.id = UUID.fromString("id");
 		for (String s : getConfig().getConfigurationSection("contents").getKeys(false)) {
 			this.contents.add(getConfig().getItemStack("contents." + s));
@@ -41,7 +43,7 @@ public class CloudPackConfig extends ConfigWrapper {
 	 * Creating a config from a pack. Adds all values according to pack.
 	 * @param pack
 	 */
-    public CloudPackConfig(CloudPack pack) {
+    public CloudPackFile(CloudPack pack) {
     	super(plugin, "storage", pack.getID().toString() + ".pack");
     	
     	createFile(null, ""
@@ -54,6 +56,7 @@ public class CloudPackConfig extends ConfigWrapper {
     	getConfig().set("name", this.name = pack.getName());
     	getConfig().set("owner", this.owner = pack.getOwner());
     	getConfig().set("rows", this.rows = pack.getRows());
+    	getConfig().set("static-id", this.staticID = pack.getStaticID());
     	getConfig().set("id", this.id = pack.getID());
     	getConfig().set("contents", this.contents = pack.getContents());
     	saveConfig();
@@ -61,6 +64,10 @@ public class CloudPackConfig extends ConfigWrapper {
     
     public int getRows() {
     	return rows;
+    }
+    
+    public int getStaticID() {
+    	return staticID;
     }
     
     public String getName() {
@@ -80,9 +87,15 @@ public class CloudPackConfig extends ConfigWrapper {
     }
     
     public static boolean isCloudPackConfig(ConfigWrapper config) {
-    	if (config.getConfig().contains("name") && config.getConfig().contains("owner") && config.getConfig().contains("contents") && config.getConfig().contains("id") && config.getConfig().contains("owner") && config.getConfig().getName().endsWith(".pack")) {
+    	if (config.getConfig().contains("name") 
+    			&& config.getConfig().contains("owner")
+    			&& config.getConfig().contains("rows")
+    			&& config.getConfig().contains("staticID")
+    			&& config.getConfig().contains("contents") 
+    			&& config.getConfig().contains("id") 
+    			&& config.getConfig().contains("owner") 
+    			&& config.getConfig().getName().endsWith(".pack")) 
     		return true;
-    	}
     	return false;
     }
 }

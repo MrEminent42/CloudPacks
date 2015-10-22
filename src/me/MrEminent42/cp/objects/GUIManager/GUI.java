@@ -1,45 +1,45 @@
 package me.MrEminent42.cp.objects.GUIManager;
 
 import java.util.HashMap;
+import java.util.UUID;
+
+import me.MrEminent42.cp.CloudPacksPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 public class GUI {
 	
-	public static HashMap<Player, GUI> open = new HashMap<Player, GUI>();
+	public static HashMap<UUID, GUI> open = new HashMap<UUID, GUI>();
 	
-	private String name;
-	private int size;
-	private HashMap<Integer, GUIItem> items = new HashMap<Integer, GUIItem>();
-	private Inventory inv;
+	protected String title;
+	protected int size;
+	protected Inventory inv;
+	protected HashMap<Integer, GUIItem> items;
 	
-	public GUI(String name, int size, HashMap<Integer, GUIItem> items) {
-		
-		this.name = name;
+	public GUI(String title, int size, HashMap<Integer, GUIItem> items) {
+		this.title = title;
 		this.items = items;
 		this.size = size;
-		this.inv = Bukkit.getServer().createInventory(null, size, name);
-		
 	}
 	
-	public void addItem(Integer slot, GUIItem item) { 
+	public GUI addItem(Integer slot, GUIItem item) { 
 		this.items.put(slot, item);
+		return this;
 	}
 	
 	public void open(Player p) {
 		for (Integer slot : this.items.keySet()) {
-			 this.inv.setItem(slot, this.items.get(slot).getItem());
+			 this.inv.setItem(slot, this.items.get(slot));
 		}
 		
-		GUI.open.put(p, this);
+		GUI.open.put(p.getUniqueId(), this);
 		p.openInventory(this.inv);
 	}
 	
-	public String getName() {
-		return this.name;
+	public String getTitle() {
+		return this.title;
 	}
 	
 	public int getSize() {
@@ -50,7 +50,7 @@ public class GUI {
 		return this.items;
 	}
 	
-	public Inventory getInventory() {
-		return this.inv;
-	}
+//	public Inventory getInventory() {
+//		return this.inv;
+//	}
 }
