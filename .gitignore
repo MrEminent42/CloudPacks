@@ -1,5 +1,6 @@
 # Eclipse IDE stuff
 /*.settings/
+/.bin/
 *.class
 .project
 .classpath
