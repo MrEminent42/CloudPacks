@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class PackList extends GUI {
 
-	public PackList(Player p, Integer page) {
+	public PackList(Player p) {
 		super(p.getName() + "'s Packs", 45, new HashMap<Integer, GUIItem>());
 		
 		final ArrayList<CloudPack> packs = new ArrayList<CloudPack>(CloudPack.getPlayerPacks(p));
